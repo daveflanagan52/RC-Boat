@@ -1,6 +1,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
+#define TEMPERATURE_PIN     18
+
 // GPS Definitions
 #define GPS_RXPIN           44
 #define GPS_TXPIN           43

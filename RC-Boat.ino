@@ -6,6 +6,7 @@
 #include "CommandControl.h"
 #include "GPS.h"
 #include "Movement.h"
+#include "Temperature.h"
 
 void setup() {
   Serial.begin(115200);
@@ -20,6 +21,7 @@ void setup() {
 }
 
 void loop() {
+  parseTemperature();
   parseGPS();
   //parseLidar();
 
