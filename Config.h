@@ -1,6 +1,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
+#define IMU_INTERVAL        200
+
 #define TEMPERATURE_PIN     18
 
 // GPS Definitions

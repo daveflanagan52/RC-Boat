@@ -24,6 +24,10 @@ struct CCDataPacket {
   binaryFloat altitude;
   
   binaryFloat temperature;
+  
+  binaryFloat roll;
+  binaryFloat pitch;
+  binaryFloat yaw;
 
   uint8_t numTargets;
   CCTarget* targets;

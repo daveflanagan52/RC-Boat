@@ -7,6 +7,7 @@
 #include "GPS.h"
 #include "Movement.h"
 #include "Temperature.h"
+#include "IMU.h"
 
 void setup() {
   Serial.begin(115200);
@@ -21,6 +22,7 @@ void setup() {
 }
 
 void loop() {
+  parseIMU();
   parseTemperature();
   parseGPS();
   //parseLidar();
