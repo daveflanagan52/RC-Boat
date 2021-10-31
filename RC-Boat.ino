@@ -27,14 +27,5 @@ void loop() {
 
   handleCommand();
   drive();
-
-  // If we haven't sent data for the defined time, lets do that
-  if (millis() - lastSendTime > LORA_INTERVAL) {
-    sendData();
-  }
-
-  // If we haven't heard from the base station in a while
-  if (millis() - lastPingTime > 5000) {
-
-  }
+  transmit();
 }

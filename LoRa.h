@@ -64,4 +64,10 @@ void sendData() {
   LoRa.receive();
 }
 
+void transmit() {  
+  if (millis() - lastSendTime > LORA_INTERVAL) {
+    sendData();
+  }
+}
+
 #endif

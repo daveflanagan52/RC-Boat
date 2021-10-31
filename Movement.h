@@ -12,6 +12,7 @@ double bearingSetpoint, bearingInput, bearingOutput;
 double speedSetpoint, speedInput, speedOutput;
 PID bearingPid(&bearingInput, &bearingOutput, &bearingSetpoint, BEARING_P, BEARING_I, BEARING_D, DIRECT);
 PID speedPid(&speedInput, &speedOutput, &speedSetpoint, SPEED_P, SPEED_I, SPEED_D, DIRECT);
+extern long lastPingTime;
 
 void setupMovement() {
   Serial.print("Movement: Initialising");
@@ -60,6 +61,10 @@ void drive() {
     );
     bearingPid.Compute();
     rudder.write(map(bearingOutput, 0, 255, 0, 180));
+  }
+  
+  if (millis() - lastPingTime > 5000) {
+
   }
 }
 

@@ -7,6 +7,7 @@
 
 TinyGPSPlus gps;
 HardwareSerial gpsSerial(1);
+extern CCDataPacket frame;
 
 void setupGPS() {
   Serial.print("GPS: Initialising");
