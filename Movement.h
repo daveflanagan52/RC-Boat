@@ -33,13 +33,7 @@ void loopMovement() {
     motor2.write(0);
     rudder.write(90);
   } else if (
-    distance(
-      data.latitude,
-      data.longitude,
-      waypoints[0].latitude,
-      waypoints[0].longitude
-    ) < MIN_DISTANCE
-  ) {
+    distance(data.latitude, data.longitude, waypoints[0].latitude, waypoints[0].longitude ) < MIN_DISTANCE) {
     // Shift all the waypoints along one
     for (uint8_t i = 0; i < NUM_WAYPOINTS - 1; i++) {
       waypoints[i] = waypoints[i + 1];
@@ -54,18 +48,13 @@ void loopMovement() {
 
     // Attempt to maintain a bearing to the next waypoint
     bearingInput = data.bearing;
-    bearingSetpoint = bearing(
-      data.latitude,
-      data.longitude,
-      waypoints[0].latitude,
-      waypoints[0].longitude
-    );
+    bearingSetpoint = bearing(data.latitude, data.longitude, waypoints[0].latitude, waypoints[0].longitude);
     bearingPid.Compute();
     rudder.write(map(bearingOutput, 0, 255, 0, 180));
   }
   
   if (millis() - lastPingTime > 5000) {
-
+    haltCommanded = true;
   }
 }
 
