@@ -30,7 +30,16 @@ void setupLora() {
   if (!LoRa.begin(LORA_FREQ)) {
     Serial.println("LoRa: Begin call returned false");
     Serial.println("LoRa: Fail");
-    while (true);
+    while (true) {
+      digitalWrite(LED_PIN, LOW);
+      delay(200);
+      digitalWrite(LED_PIN, HIGH);
+      delay(200);
+      digitalWrite(LED_PIN, LOW);
+      delay(200);
+      digitalWrite(LED_PIN, HIGH);
+      delay(800);
+    }
   }
   LoRa.setSyncWord(LORA_SYNC);
   LoRa.onReceive(onRecieve);

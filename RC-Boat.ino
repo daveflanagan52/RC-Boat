@@ -13,6 +13,7 @@ void setup() {
   Serial.begin(115200);
   while (!Serial);
 
+  pinMode(LED_PIN, OUTPUT);
   setupGPS();
   setupLora();
   //setupLidar();
