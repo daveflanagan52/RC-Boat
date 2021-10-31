@@ -5,33 +5,22 @@
 #include <SPI.h>
 #include <LoRa.h>
 
-long lastSendTime = 0;
-extern CCDataPacket frame;
-extern void parseCommand(int packet[], int packetSize, int rssi, int snr);
-
-void rebroadcast(int packet[], int packetSize) {
-  LoRa.beginPacket();
-  for (uint8_t i = 0; i < packetSize; i++)
-    LoRa.write(packet[i]);
-  LoRa.endPacket();
-  LoRa.receive();
-}
+extern DroneData data;
+extern void parseCommand(uint8_t* packet, int packetSize, int rssi, int snr);
 
 void onRecieve(int packetSize) {
-  if (packetSize == 0)
+  if (packetSize < 3) // We expect at least a sender, recipent and command
     return;
 
-  int packet[packetSize] = {};
-  for (uint8_t i = 0; i < packetSize; i++)
-    packet[i] = LoRa.read();
+  int recipient = LoRa.peek();
 
   // Check if the message is for me
-  if (packet[CC_RECIPIENT] != LORA_ID && packet[CC_RECIPIENT] != LORA_BROADCAST) {
-    // If not, we can re-broadcast it incase the actual recipent is out of range
-    rebroadcast(packet, packetSize);
+  if (recipient != LORA_ID && recipient != LORA_BROADCAST) {
     return;
   }
-  
+
+  uint8_t packet[packetSize];
+  LoRa.readBytes((char*)&packet, packetSize);  
   parseCommand(packet, packetSize, LoRa.packetRssi(), (int)LoRa.packetSnr());
 }
 
@@ -49,25 +38,14 @@ void setupLora() {
   Serial.println("LoRa: Success");
 }
 
-void sendData() {
+void sendPacket(int recipient, int sender, int type, const uint8_t* packet) {
   LoRa.beginPacket();
-  LoRa.write(random(0xFF));
-  LoRa.write(LORA_BASESTATION);
-  LoRa.write(LORA_ID);
-  LoRa.write(frame.latitude.binary, 4);
-  LoRa.write(frame.longitude.binary, 4);
-  LoRa.write(frame.speed.binary, 4);
-  LoRa.write(frame.bearing.binary, 4);
+  LoRa.write(recipient);
+  LoRa.write(sender);
+  LoRa.write(type);
+  LoRa.write(packet, sizeof(packet));
   LoRa.endPacket();
-
-  lastSendTime = millis();
   LoRa.receive();
-}
-
-void transmit() {  
-  if (millis() - lastSendTime > LORA_INTERVAL) {
-    sendData();
-  }
 }
 
 #endif

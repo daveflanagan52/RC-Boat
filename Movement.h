@@ -12,6 +12,7 @@ double bearingSetpoint, bearingInput, bearingOutput;
 double speedSetpoint, speedInput, speedOutput;
 PID bearingPid(&bearingInput, &bearingOutput, &bearingSetpoint, BEARING_P, BEARING_I, BEARING_D, DIRECT);
 PID speedPid(&speedInput, &speedOutput, &speedSetpoint, SPEED_P, SPEED_I, SPEED_D, DIRECT);
+bool haltCommanded = false;
 extern long lastPingTime;
 
 void setupMovement() {
@@ -25,18 +26,18 @@ void setupMovement() {
   Serial.println("Movement: Success");
 }
 
-void drive() {
+void loopMovement() {
   // If we've been commanded to halt, or the current waypoint is invalid lets stop
-  if (command.type == COMMAND_HALT || !waypoints[0].valid) {
+  if (haltCommanded || !waypoints[0].valid) {
     motor1.write(0);
     motor2.write(0);
     rudder.write(90);
   } else if (
     distance(
-      frame.latitude.floatingPoint,
-      frame.longitude.floatingPoint,
-      waypoints[0].latitude.floatingPoint,
-      waypoints[0].longitude.floatingPoint
+      data.latitude,
+      data.longitude,
+      waypoints[0].latitude,
+      waypoints[0].longitude
     ) < MIN_DISTANCE
   ) {
     // Shift all the waypoints along one
@@ -46,18 +47,18 @@ void drive() {
     waypoints[NUM_WAYPOINTS - 1] = { 0.0, 0.0, false };
   } else {
     // Attempt to maintain the target speed
-    speedInput = frame.speed.floatingPoint;
+    speedInput = data.speed;
     speedPid.Compute();
     motor1.write(map(speedOutput, 0, 255, 0, 180));
     motor2.write(map(speedOutput, 0, 255, 0, 180));
 
     // Attempt to maintain a bearing to the next waypoint
-    bearingInput = frame.bearing.floatingPoint;
+    bearingInput = data.bearing;
     bearingSetpoint = bearing(
-      frame.latitude.floatingPoint,
-      frame.longitude.floatingPoint,
-      waypoints[0].latitude.floatingPoint,
-      waypoints[0].longitude.floatingPoint
+      data.latitude,
+      data.longitude,
+      waypoints[0].latitude,
+      waypoints[0].longitude
     );
     bearingPid.Compute();
     rudder.write(map(bearingOutput, 0, 255, 0, 180));

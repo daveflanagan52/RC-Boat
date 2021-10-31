@@ -7,7 +7,7 @@
 
 TinyGPSPlus gps;
 HardwareSerial gpsSerial(1);
-extern CCDataPacket frame;
+extern DroneData data;
 
 void setupGPS() {
   Serial.print("GPS: Initialising");
@@ -19,11 +19,11 @@ void parseGPS() {
   while (gpsSerial.available())
       gps.encode(gpsSerial.read());
   if (gps.location.isValid()) {
-    frame.latitude.floatingPoint = gps.location.lat();
-    frame.longitude.floatingPoint = gps.location.lng();
-    frame.speed.floatingPoint = gps.speed.isValid() ? gps.speed.kmph() : 0;
-    frame.bearing.floatingPoint = gps.course.isValid() ? gps.course.deg() : 0;
-    frame.altitude.floatingPoint = gps.altitude.isValid() ? gps.altitude.meters() : 0;
+    data.latitude = gps.location.lat();
+    data.longitude = gps.location.lng();
+    data.speed = gps.speed.isValid() ? gps.speed.kmph() : 0;
+    data.bearing = gps.course.isValid() ? gps.course.deg() : 0;
+    data.altitude = gps.altitude.isValid() ? gps.altitude.meters() : 0;
   }
 }
 #endif

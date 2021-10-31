@@ -1,11 +1,11 @@
 #ifndef __TEMPERATURE_H__
 #define __TEMPERATURE_H__
 
-extern CCDataPacket frame;
+extern DroneData data;
 
 void parseTemperature() {
-  frame.temperature.floatingPoint = analogRead(TEMPERATURE_PIN) * 3.3 / 1024.0;
-  frame.temperature.floatingPoint -= 0.5;
-  frame.temperature.floatingPoint /= 0.01;
+  data.temperature = analogRead(TEMPERATURE_PIN) * 3.3 / 1024.0;
+  data.temperature -= 0.5;
+  data.temperature /= 0.01;
 }
 #endif

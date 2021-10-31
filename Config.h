@@ -32,17 +32,19 @@
 #define LORA_IRQ            39
 #define LORA_FREQ           866E6
 #define LORA_SYNC           0xB0
-#define LORA_INTERVAL       2000
 
 // Command definitions
 #define MIN_DISTANCE        50
 #define TARGET_SPEED        2
 #define NUM_WAYPOINTS       50
+#define COMMAND_FAIL        -1
 #define COMMAND_NONE        0
-#define COMMAND_HALT        1
+#define COMMAND_ACKNOWLEDGE 1
 #define COMMAND_PING        2
-#define COMMAND_GOTO        3
-#define COMMAND_WAYPOINT    4
+#define COMMAND_PONG        3
+#define COMMAND_HALT        4
+#define COMMAND_GOTO        5
+#define COMMAND_WAYPOINT    6
 
 // Movement PID tuning variables
 #define BEARING_P           2
@@ -53,9 +55,8 @@
 #define SPEED_D             2
 
 // Command Control variables
-#define CC_ID               0
-#define CC_RECIPIENT        1
-#define CC_SENDER           2
-#define CC_TYPE             3
+#define CC_RECIPIENT        0
+#define CC_SENDER           1
+#define CC_TYPE             2
 
 #endif

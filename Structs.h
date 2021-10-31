@@ -3,43 +3,29 @@
 
 #include <Arduino.h>
 
-typedef union {
-  float floatingPoint;
-  byte binary[4];
-} binaryFloat;
-
-struct CCTarget {
+struct DroneTarget {
   uint16_t distance;
   uint8_t quality;
   float bearing;
 };
 
-struct CCDataPacket {
+struct DroneData {
   uint8_t id;
 
-  binaryFloat latitude;
-  binaryFloat longitude;
-  binaryFloat speed;
-  binaryFloat bearing;
-  binaryFloat altitude;
+  float latitude;
+  float longitude;
+  float speed;
+  float bearing;
+  float altitude;
   
-  binaryFloat temperature;
+  float temperature;
   
-  binaryFloat roll;
-  binaryFloat pitch;
-  binaryFloat yaw;
+  float roll;
+  float pitch;
+  float yaw;
 
   uint8_t numTargets;
-  CCTarget* targets;
-};
-
-struct CCCommandPacket {
-  uint8_t sender;
-  uint16_t type;
-  int rssi;
-  int snr;
-  binaryFloat latitude;
-  binaryFloat longitude;
+  DroneTarget* targets;
 };
 
 struct LidarData {
@@ -51,20 +37,8 @@ struct LidarData {
 };
 
 struct Location {
-  binaryFloat latitude;
-  binaryFloat longitude;
+  float latitude;
+  float longitude;
   bool valid;
-
-  Location() {
-    latitude.floatingPoint = 0;
-    longitude.floatingPoint = 0;
-    valid = false;
-  }
-
-  Location(float _latitude, float _longitude, bool _valid) {
-    latitude.floatingPoint = _latitude;
-    longitude.floatingPoint = _longitude;
-    valid = _valid;
-  }
 };
 #endif

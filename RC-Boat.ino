@@ -18,7 +18,7 @@ void setup() {
   //setupLidar();
   setupMovement();
 
-  frame.id = LORA_ID;
+  data.id = LORA_ID;
 }
 
 void loop() {
@@ -27,7 +27,5 @@ void loop() {
   parseGPS();
   //parseLidar();
 
-  handleCommand();
-  drive();
-  transmit();
+  loopMovement();
 }

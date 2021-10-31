@@ -6,7 +6,7 @@
 
 MPU6050 mpu(Wire);
 long lastUpdateTime = 0;
-extern CCDataPacket frame;
+extern DroneData data;
 
 void setupIMU() {
   Serial.print("IMU: Initialising");
@@ -19,9 +19,9 @@ void setupIMU() {
 void parseIMU() {
   if (millis() - lastUpdateTime > IMU_INTERVAL) {
     mpu.Execute();
-    frame.pitch.floatingPoint = mpu.GetAngX();
-    frame.roll.floatingPoint = mpu.GetAngY();
-    frame.yaw.floatingPoint = mpu.GetAngZ();
+    data.pitch = mpu.GetAngX();
+    data.roll = mpu.GetAngY();
+    data.yaw = mpu.GetAngZ();
     lastUpdateTime = millis();
   }
 }
